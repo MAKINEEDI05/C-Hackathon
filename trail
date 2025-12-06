@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Car Wash Queue Animation</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f6f8;
+            text-align: center;
+        }
+
+        h2 {
+            margin-top: 30px;
+        }
+
+        .road {
+            position: relative;
+            margin: 40px auto;
+            width: 600px;
+            height: 100px;
+            border: 3px dashed #333;
+            background: #ffffff;
+            display: flex;
+            align-items: center;
+            overflow: hidden;
+        }
+
+        .label-front {
+            position: absolute;
+            left: 10px;
+            top: 5px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .label-rear {
+            position: absolute;
+            right: 10px;
+            top: 5px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .queue {
+            display: flex;
+            margin-left: 40px;
+        }
+
+        .car {
+            width: 80px;
+            height: 40px;
+            margin: 0 10px;
+            border-radius: 8px;
+            background: #3498db;
+            color: #ffffff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 13px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.25);
+        }
+
+        /* Enqueue animation: car comes from the right (rear) */
+        .enqueue {
+            animation: enqueue 1s ease-out forwards;
+        }
+
+        /* Dequeue animation: car leaves to the left (front) */
+        .dequeue {
+            animation: dequeue 1s ease-in forwards;
+        }
+
+        /* Timing offsets simulate the sample scenario:
+           - Car1, Car2, Car3 join first
+           - Car1 leaves (dequeue)
+           - Car4 joins
+           - Car2 leaves (dequeue)
+        */
+
+        .car.car1   { animation-delay: 0.2s; }
+        .car.car2   { animation-delay: 0.4s; }
+        .car.car3   { animation-delay: 0.6s; }
+        .car.car1dq { animation-delay: 1.4s; }
+        .car.car4   { animation-delay: 2.0s; }
+        .car.car2dq { animation-delay: 2.8s; }
+
+        @keyframes enqueue {
+            from { transform: translateX(120px); opacity: 0; }
+            to   { transform: translateX(0);     opacity: 1; }
+        }
+
+        @keyframes dequeue {
+            from { transform: translateX(0);       opacity: 1; }
+            to   { transform: translateX(-150px);  opacity: 0; }
+        }
+
+        .legend {
+            margin-top: 20px;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+
+<h2>Car Wash Queue – FIFO Visualization</h2>
+
+<div class="road">
+    <div class="label-front">Front (Next for washing)</div>
+    <div class="label-rear">Rear (New cars arrive)</div>
+
+    <div class="queue">
+        <!-- Initial queue: Car1, Car2, Car3 arrive (enqueue) -->
+        <div class="car enqueue car1">Car1</div>
+        <div class="car enqueue car2">Car2</div>
+        <div class="car enqueue car3">Car3</div>
+
+        <!-- Dequeue events: cars leaving from the front -->
+        <div class="car dequeue car1dq">Car1</div>
+        <div class="car enqueue car4">Car4</div>
+        <div class="car dequeue car2dq">Car2</div>
+
+        <!-- After all animations, the conceptual remaining queue is:
+             Car3 (next), Car4
+        -->
+    </div>
+</div>
+
+<div class="legend">
+    <p>Cars enter from the <strong>rear</strong> (right) using <em>enqueue</em>.</p>
+    <p>Cars leave from the <strong>front</strong> (left) using <em>dequeue</em>.</p>
+    <p>This matches the program logic: <strong>First-In, First-Out (FIFO)</strong>.</p>
+</div>
+
+</body>
+</html>
